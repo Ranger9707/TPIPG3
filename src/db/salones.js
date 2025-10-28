@@ -13,18 +13,30 @@ export default class Salones {
         return salon[0];
     }
 
-    crear = async ({titulo, direccion, capacidad, importe}) => {
-        const sql = "INSERT INTO salones (titulo, direccion, capacidad, importe) VALUES (?, ?, ?, ?)";
-        const valores = [titulo, direccion, capacidad, importe];
-        const [result] = await conexion.execute(sql, valores);
-        return result.insertId;
+    crear = async(salon) => {
+        const {titulo, direccion, capacidad, importe} = salon;
+        const sql = 'INSERT INTO salones (titulo, direccion, capacidad, importe) VALUES (?,?,?,?)';
+        const [result] = await conexion.execute(sql, [titulo, direccion, capacidad, importe]);
+
+        if (result.affectedRows === 0){
+            return null;
+        }
+
+        return this.buscarPorId(result.insertId);
     }
 
-    actualizar = async (salon_id, {titulo, direccion, capacidad, importe}) => {
-        const sql = "UPDATE salones SET titulo = ?, direccion = ?, capacidad = ?, importe = ? WHERE salon_id = ? AND activo = 1";
-        const valores = [titulo, direccion, capacidad, importe, salon_id];
-        const [result] = await conexion.execute(sql, valores);
-        return result.affectedRows;
+    editar = async (salon_id, datos) => {
+        const camposActualizar = Object.keys(datos);
+        const valoresActualizar = Object.values(datos);
+        const setValores = camposActualizar.map(campo => `${campo} = ?`).join(', ');
+        const parametros = [...valoresActualizar, salon_id];
+        const sql = `UPDATE salones SET ${setValores} WHERE salon_id = ?`;
+        const [result] = await conexion.execute(sql, parametros);
+        if (result.affectedRows === 0) {
+            return null;
+        }
+        return this.buscarPorId(salon_id);
+  
     }
 
     eliminar = async (salon_id) => {
