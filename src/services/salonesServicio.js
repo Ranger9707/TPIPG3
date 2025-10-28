@@ -17,8 +17,12 @@ export default class SalonesServicio {
         return this.salones.crear(salon);
     }
 
-    editar = (salon_id, salon) => {
-        return this.salones.actualizar(salon_id, salon);
+    editar = (salon_id, datos) => {
+        const existe = this.salones.buscarPorId(salon_id);
+        if(!existe){
+            return null;
+        }
+        return this.salones.editar(salon_id, datos);
     }
 
     eliminar = (salon_id) => {
