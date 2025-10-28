@@ -41,7 +41,6 @@ export default class Turnos {
     }
 
     eliminar = async (turno_id) => {
-        // Soft delete
         const sql = "UPDATE turnos SET activo = 0 WHERE turno_id = ? AND activo = 1";
         const [result] = await conexion.execute(sql, [turno_id]);
         return result.affectedRows;

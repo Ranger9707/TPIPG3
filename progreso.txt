@@ -1,11 +1,3 @@
-1. Endpoints Faltantes (BREAD)
-
-Usuarios (Clientes):
-
-Faltan todos los endpoints para el BREAD (Crear, Listar, Buscar, Editar, Eliminar) requerido por Administradores.
-
-Falta implementar el listado (GET /usuarios) para Empleados (requisito "Listado de Clientes").
-
 2. Reportes y Estadísticas (Admin)
 Reportes (PDF/CSV): No hay ninguna implementación para generar reportes de reservas en formatos PDF o CSV.
 

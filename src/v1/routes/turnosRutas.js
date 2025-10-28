@@ -9,10 +9,9 @@ const turnosControlador = new TurnosControlador();
 const router = express.Router();
 let cache = apicache.middleware;
 
-// Regex para validar formato HH:MM (o HH:MM:SS)
+// Regex para validar formato hora
 const timeRegex = /^(?:2[0-3]|[01]?[0-9]):[0-5]?[0-9](?::[0-5]?[0-9])?$/;
 
-// --- Roles: Admin (1), Empleado (2) ---
 router.post('/', 
     autorizarUsuarios([1, 2]), // Solo Admin y Empleado
     [
@@ -37,8 +36,7 @@ router.delete('/:turno_id',
     autorizarUsuarios([1, 2]), // Solo Admin y Empleado
     turnosControlador.eliminar);
 
-// --- Roles: Admin (1), Empleado (2), Cliente (3) ---
-router.get('/', 
+    router.get('/', 
     autorizarUsuarios([1, 2, 3]), // Todos los usuarios logueados
     cache("5 minutes"), 
     turnosControlador.buscarTodos);

@@ -27,9 +27,11 @@ export default class ReservasServicios {
         try {
             await conexion.beginTransaction();
 
+            // Borrar servicios anteriores
             const sqlDelete = 'DELETE FROM reservas_servicios WHERE reserva_id = ?';
             await conexion.execute(sqlDelete, [reserva_id]);
 
+            // Insertar servicios nuevos
             for (const servicio of servicios){
                 const sqlInsert = `INSERT INTO reservas_servicios (reserva_id, servicio_id, importe) 
                     VALUES (?,?,?);`;
@@ -45,5 +47,4 @@ export default class ReservasServicios {
             return false;
         }
     }
-
 }

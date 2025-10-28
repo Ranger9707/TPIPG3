@@ -8,6 +8,7 @@ import { router as ReservasRutasV1} from './v1/routes/reservasRutas.js';
 import { router as AuthRutaV1} from './v1/routes/authRutas.js';
 import { router as ServiciosRutasV1} from './v1/routes/serviciosRutas.js';
 import { router as TurnosRutasV1} from './v1/routes/turnosRutas.js';
+import { router as UsuariosRutasV1} from './v1/routes/usuariosRutas.js';
 
 import {strategy, validation} from './config/passport.js';
 
@@ -28,6 +29,7 @@ app.use('/api/v1/salones', passport.authenticate('jwt', { session: false }), Sal
 app.use('/api/v1/reservas', passport.authenticate( 'jwt', { session:false }), ReservasRutasV1);
 app.use('/api/v1/servicios', passport.authenticate('jwt', { session: false }), ServiciosRutasV1);
 app.use('/api/v1/turnos', passport.authenticate('jwt', { session: false }), TurnosRutasV1);
+app.use('/api/v1/usuarios', passport.authenticate('jwt', { session: false }), UsuariosRutasV1);
 
 
 export default app;

@@ -70,22 +70,24 @@ export default class ReservasServicio {
             return null;
         }
 
+        // Separamos los servicios del resto de los datos de la reserva
         const { servicios, ...datosReserva } = datos;
 
+        // Actualizar la reserva principal 
         if (Object.keys(datosReserva).length > 0) {
             await this.reserva.editar(reserva_id, datosReserva);
         }
 
+        // Actualizar los servicios asociados 
         if (servicios && Array.isArray(servicios)) {
             await this.reservas_servicios.actualizar(reserva_id, servicios);
         }
 
+        // Devolvemos la reserva con todos los datos actualizados
         return this.reserva.buscarPorId(reserva_id);
     }
 
     eliminar = async (reserva_id) => {
-        
         return this.reserva.eliminar(reserva_id);
     }
-
 }

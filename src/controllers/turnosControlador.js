@@ -43,8 +43,8 @@ export default class TurnosControlador {
                     mensaje: 'Turno no creado'
                 })
             }
-            
-            apicache.clear('/api/v1/turnos'); // Limpiamos el caché
+
+            apicache.clear('/api/v1/turnos');
             res.status(201).json({
                 estado: true, 
                 mensaje: 'Turno creado!',
@@ -72,7 +72,7 @@ export default class TurnosControlador {
                 })
             }
 
-            apicache.clear('/api/v1/turnos'); // Limpiamos el caché
+            apicache.clear('/api/v1/turnos'); 
             res.json({
                 estado: true, 
                 mensaje: 'Turno modificado!',
@@ -96,7 +96,7 @@ export default class TurnosControlador {
                 return res.status(404).json({estado: false, mensaje: "Turno no encontrado"});
             }
 
-            apicache.clear('/api/v1/turnos'); // Limpiamos el caché
+            apicache.clear('/api/v1/turnos'); 
             res.json({estado: true, mensaje: "Turno eliminado"});
         }catch(error){
             console.log("error en DELETE /turnos/:id", error);

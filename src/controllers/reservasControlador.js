@@ -103,7 +103,7 @@ export default class ReservasControlador{
     editar = async (req, res) => {
         try {
             const { reserva_id } = req.params;
-            const datos = req.body;
+            const datos = req.body; 
             if (datos.usuario_id) {
                 delete datos.usuario_id;
             }
@@ -146,5 +146,4 @@ export default class ReservasControlador{
             res.status(500).json({estado: false, mensaje: "Error del servidor"});
         }
     }
-
 }
