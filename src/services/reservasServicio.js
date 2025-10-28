@@ -70,32 +70,22 @@ export default class ReservasServicio {
             return null;
         }
 
-        // Separamos los servicios del resto de los datos de la reserva
         const { servicios, ...datosReserva } = datos;
 
-        // 1. Actualizar la reserva principal (si hay datos para ello)
-        // (ej: cambiar la temática, fecha, importe_total, etc.)
         if (Object.keys(datosReserva).length > 0) {
             await this.reserva.editar(reserva_id, datosReserva);
         }
 
-        // 2. Actualizar los servicios asociados (si se enviaron en el body)
         if (servicios && Array.isArray(servicios)) {
-            // Usamos el nuevo método 'actualizar'
             await this.reservas_servicios.actualizar(reserva_id, servicios);
         }
 
-        // Devolvemos la reserva con todos los datos actualizados
         return this.reserva.buscarPorId(reserva_id);
     }
 
     eliminar = async (reserva_id) => {
         
-        // NOTA: Para un borrado completo, también deberíamos borrar
-        // de 'reservas_servicios' (usando el método 'actualizar' con array vacío).
-        // Pero como es un soft-delete de la reserva, los registros asociados
-        // quedan "huérfanos" pero intactos, lo cual es aceptable.
-
         return this.reserva.eliminar(reserva_id);
     }
+
 }
