@@ -1,4 +1,5 @@
 import SalonesServicio from "../services/salonesServicio.js";
+import apicache from 'apicache';
 
 export default class SalonesControlador {
     constructor(){
@@ -30,34 +31,57 @@ export default class SalonesControlador {
     }
 
     crear = async (req, res) => {
-        try{
-            const { titulo, direccion, capacidad, importe } = req.body;
-            if(!titulo || !direccion || !capacidad || !importe){
-                return res.status(400).json({estado: false, mensaje: "Faltan datos"});
+        try {
+            const {titulo, direccion, capacidad, importe} = req.body;
+
+            const salon =  {
+                titulo, direccion, capacidad, importe
+            } 
+            const nuevoSalon = await this.salonesServicio.crear(salon);
+            if (!nuevoSalon) {
+                return res.status(404).json({
+                    estado: false,
+                    mensaje: 'Salón no creado'
+                })
             }
-            const nuevoSalonId = await this.salonesServicio.crear(req.body);
-            res.status(201).json({ estado: true, mensaje: `Salón creado con ID: ${nuevoSalonId}` });
-        }catch(error){
-            console.log("error en la consulta POST /salones", error);
-            res.status(500).json({estado: false, mensaje: "Error del servidor"});
+            apicache.clear('/api/v1/salones');
+            res.json({
+                estado: true, 
+                mensaje: 'Salón creado!',
+                salon: nuevoSalon
+            });
+        } catch (err) {
+            console.log('Error en POST /salones/', err);
+            res.status(500).json({
+                estado: false,
+                mensaje: 'Error interno del servidor.'
+            });
         }
     }
 
-    editar = async (req, res) => {
-        try{
-            const { salon_id } = req.params;
-            const { titulo, direccion, capacidad, importe } = req.body;
-            if(!titulo || !direccion || !capacidad || !importe){
-                return res.status(400).json({estado: false, mensaje: "Faltan datos"});
+    editar = async (req, res) => {        try {
+            const salon_id = req.params.salon_id;
+            const datos = req.body;
+            const salonModificado = await this.salonesServicio.editar(salon_id, datos);
+
+            if (!salonModificado) {
+                return res.status(404).json({
+                    estado: false,
+                    mensaje: 'Salón no encontrado para ser modificado.'
+                })
             }
-            const filasAfectadas = await this.salonesServicio.editar(salon_id, req.body);
-            if(filasAfectadas === 0) {
-                return res.status(404).json({estado: false, mensaje: "Salón no encontrado"});
-            }
-            res.json({estado: true, mensaje: "Salón actualizado"});
-        }catch(error){
-            console.log("error en la consulta PUT /salones/:id", error);
-            res.status(500).json({estado: false, mensaje: "Error del servidor"});
+            apicache.clear('/api/v1/salones');
+            res.json({
+                estado: true, 
+                mensaje: 'Salón modificado!',
+                salon: salonModificado
+            });
+        } catch (err) {
+            console.log('Error en PUT /salones/:salon_id', err);
+            res.status(500).json({
+                estado: false,
+                mensaje: 'Error interno del servidor.'
+            });
         }
     }
     
@@ -68,6 +92,7 @@ export default class SalonesControlador {
             if(filasAfectadas === 0) {
                 return res.status(404).json({estado: false, mensaje: "Salón no encontrado"});
             }
+            apicache.clear('/api/v1/salones');
             res.json({estado: true, mensaje: "Salón eliminado"});
         }catch(error){
             console.log("error en la consulta DELETE /salones/:id", error);
