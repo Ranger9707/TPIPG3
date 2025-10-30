@@ -39,7 +39,7 @@ router.put('/:reserva_id',
         check('servicios.*.servicio_id').optional().notEmpty().withMessage('El servicio_id es requerido.'),
         check('servicios.*.importe').optional().isFloat().withMessage('El importe debe ser numérico.'),
         
-        validarCampos
+        validarCampo
     ],
     reservasControlador.editar);
 

@@ -1,0 +1,5 @@
+::1 - - [30/Oct/2025:20:53:54 +0000] "GET /api/v1/salones HTTP/1.1" 401 - "-" "bruno-runtime/2.13.2"
+::1 - - [30/Oct/2025:20:53:56 +0000] "GET /api/v1/salones HTTP/1.1" 401 - "-" "bruno-runtime/2.13.2"
+::1 - - [30/Oct/2025:20:53:57 +0000] "GET /api/v1/salones HTTP/1.1" 401 - "-" "bruno-runtime/2.13.2"
+::1 - - [30/Oct/2025:20:53:59 +0000] "GET /api/v1/salones/1 HTTP/1.1" 401 - "-" "bruno-runtime/2.13.2"
+::1 - - [30/Oct/2025:20:54:09 +0000] "PUT /api/v1/salones/111 HTTP/1.1" 401 - "-" "bruno-runtime/2.13.2"

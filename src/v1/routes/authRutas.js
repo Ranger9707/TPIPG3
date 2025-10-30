@@ -1,5 +1,5 @@
 import express from 'express';
-import AuthController from '../../controllers/authControlador';
+import AuthController from '../../controllers/authControlador.js';
 import {check} from 'express-validator';
 import {validarCampo} from '../../middlewares/validarCampo.js';
 
@@ -15,4 +15,4 @@ router.post('/login', [
 ], authController.login);
 
 
-export default {router};
+export {router};
