@@ -2,7 +2,7 @@
 # Trabajo Practico Integrador
 
 # Integrantes:
-Vespa, Matias
+# Vespa, Matias
 
 
 # FALTANTE.
