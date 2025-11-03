@@ -36,8 +36,7 @@ export default class Salones {
             return null;
         }
         return this.buscarPorId(salon_id);
-  
-    }
+}
 
     eliminar = async (salon_id) => {
         const sql = "UPDATE salones SET activo = 0 WHERE salon_id = ? AND activo = 1";
