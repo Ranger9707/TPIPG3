@@ -33,13 +33,13 @@ export default class notificacionesServicio {
             html: correoHTML,
         };
 
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                res.json({ mensaje: 'Error al enviar el correo', error: error });
-            }
-            res.json({ mensaje: 'Correo enviado correctamente', info: info });
-        });
+       try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Correo enviado correctamente', info.response);
+    } catch (error) {
+        console.error('Error al enviar el correo:', error);
     }
+}
 
     enviarMensaje = async (datos)  => {}
     enviarWhatsApp = async (datos)  => {}

@@ -9,7 +9,7 @@ export default class SalonesControlador {
     buscarTodos = async (req, res) => {
         try{
             const salones = await this.salonesServicio.buscarTodos();
-            res.json({estado: true, datos: salones});
+            res.json({estado: true, datos: salones}); 
         }catch(error){
             console.log("error en la consulta GET /salones", error);
             res.status(500).json({estado: false, mensaje: "Error del servidor"});
@@ -23,7 +23,7 @@ export default class SalonesControlador {
             if(!salon) {
                 return res.status(404).json({estado: false, mensaje: "Salón no encontrado"});
             }
-            res.json({estado: true, datos: salon});
+            res.json({estado: true, datos: salon}); 
         }catch(error){
             console.log("error en la consulta GET /salones/:id", error);
             res.status(500).json({estado: false, mensaje: "Error del servidor"});
@@ -45,10 +45,10 @@ export default class SalonesControlador {
                 })
             }
             apicache.clear('/api/v1/salones');
-            res.json({
+            res.status(201).json({ 
                 estado: true, 
                 mensaje: 'Salón creado!',
-                salon: nuevoSalon
+                datos: nuevoSalon 
             });
         } catch (err) {
             console.log('Error en POST /salones/', err);
@@ -59,7 +59,8 @@ export default class SalonesControlador {
         }
     }
 
-    editar = async (req, res) => {        try {
+    editar = async (req, res) => {        
+        try {
             const salon_id = req.params.salon_id;
             const datos = req.body;
             const salonModificado = await this.salonesServicio.editar(salon_id, datos);
@@ -74,7 +75,7 @@ export default class SalonesControlador {
             res.json({
                 estado: true, 
                 mensaje: 'Salón modificado!',
-                salon: salonModificado
+                datos: salonModificado 
             });
         } catch (err) {
             console.log('Error en PUT /salones/:salon_id', err);
@@ -99,5 +100,4 @@ export default class SalonesControlador {
             res.status(500).json({estado: false, mensaje: "Error del servidor"});
         }
     }
-        
-    }
+}

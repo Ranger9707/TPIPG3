@@ -14,77 +14,71 @@ export default class Reservas {
         return reservas;
     }
 
-    buscarPorId = async(reserva_id) => {
+    buscarPorId = async(reserva_id, db = conexion) => { 
         const sql = 'SELECT * FROM reservas WHERE activo = 1 AND reserva_id = ?';
-        const [reserva] = await conexion.execute(sql, [reserva_id]);
+        const [reserva] = await db.execute(sql, [reserva_id]); 
         if(reserva.length === 0){
             return null;
         }
-
         return reserva[0];
     }
 
-    crear = async(reserva) => {
+    crear = async(reserva, db = conexion) => { 
         const {
-                fecha_reserva,
-                salon_id,
-                usuario_id,
-                turno_id,
-                foto_cumpleaniero, 
-                tematica,
-                importe_salon,
-                importe_total 
+                fecha_reserva, salon_id, usuario_id, turno_id,
+                foto_cumpleaniero, tematica, importe_salon, importe_total 
             } = reserva;
         
         const sql = `INSERT INTO reservas 
             (fecha_reserva, salon_id, usuario_id, turno_id, foto_cumpleaniero, tematica, importe_salon, importe_total) 
             VALUES (?,?,?,?,?,?,?,?)`;
         
-        const [result] = await conexion.execute(sql, 
+        const [result] = await db.execute(sql, 
             [fecha_reserva, salon_id, usuario_id, turno_id, foto_cumpleaniero, tematica, importe_salon, importe_total]);
 
         if (result.affectedRows === 0){
             return null;
         }
 
-        return this.buscarPorId(result.insertId);
+        return this.buscarPorId(result.insertId, db); 
     }
 
-    datosParaNotificacion = async(reserva_id) => {
-        const sql = `SELECT r.fecha_reserva as fecha, s.titulo as salon, t.orden as turno
-            FROM reservas as r
-            INNER JOIN  salones as s on s.salon_id = r.salon_id 
-            INNER JOIN  turnos as t on t.turno_id = r.turno_id
-            WHERE r.activo = 1 and r.reserva_id = ?`;
-
-        const [reserva] = await conexion.execute(sql, [reserva_id]);
-        if(reserva.length === 0){
+    datosParaNotificacion = async(reserva_id, db = conexion) => { 
+        const sql = `CALL sp_notificacion_reserva(?)`;
+        
+        try {
+            const [resultados] = await db.execute(sql, [reserva_id]); 
+            if(resultados[0].length === 0){
+                return null;
+            }
+            return [ resultados[0], resultados[1] ]; 
+        } catch (error) {
+            console.error("Error al llamar a sp_notificacion_reserva:", error);
             return null;
         }
-
-        return reserva[0];
     }
-
-    editar = async (reserva_id, datos) => {
+    editar = async (reserva_id, datos, db = conexion) => { 
             const camposActualizar = Object.keys(datos);
             const valoresActualizar = Object.values(datos);
             const setValores = camposActualizar.map(campo => `${campo} = ?`).join(', ');
             const parametros = [...valoresActualizar, reserva_id];
             
-            // actualiza siactivo
             const sql = `UPDATE reservas SET ${setValores} WHERE reserva_id = ? AND activo = 1`;
-            const [result] = await conexion.execute(sql, parametros);
+            const [result] = await db.execute(sql, parametros); 
 
             if (result.affectedRows === 0) {
-                return null;
+                
             }
-            return this.buscarPorId(reserva_id);
+            return this.buscarPorId(reserva_id, db); 
     }
-
-    eliminar = async (reserva_id) => {
+    eliminar = async (reserva_id, db = conexion) => { 
         const sql = "UPDATE reservas SET activo = 0 WHERE reserva_id = ? AND activo = 1";
-        const [result] = await conexion.execute(sql, [reserva_id]);
+        const [result] = await db.execute(sql, [reserva_id]); 
         return result.affectedRows;
     }
-
+    llamarSpReporteReservas = async (db = conexion) => { 
+        const sql = "CALL sp_reporte_reservas()";
+        const [resultados] = await db.execute(sql); 
+        return resultados[0]; 
+    }
 } 

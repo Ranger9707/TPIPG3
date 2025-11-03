@@ -1,4 +1,6 @@
 import UsuariosServicio from "../services/usuariosServicio.js";
+//1=Admin, 2=Empleado, 3=Cliente
+
 
 export default class UsuariosControlador {
     constructor(){
@@ -33,7 +35,6 @@ export default class UsuariosControlador {
         try {
             const {nombre, apellido, nombre_usuario, contrasenia, tipo_usuario, celular, foto} = req.body;
             
-            // Validación básica de tipo de usuario
             if (![1, 2, 3].includes(tipo_usuario)) {
                 return res.status(400).json({
                     estado: false,
@@ -45,9 +46,10 @@ export default class UsuariosControlador {
             const nuevoUsuario = await this.usuariosServicio.crearUsuario(usuario);
             
             if (!nuevoUsuario) {
+                // Esto puede pasar si la inserción falla por razones que no son error
                 return res.status(400).json({
                     estado: false,
-                    mensaje: 'Usuario no creado (posible email duplicado)'
+                    mensaje: 'Usuario no creado'
                 });
             }
             
@@ -56,11 +58,19 @@ export default class UsuariosControlador {
                 mensaje: 'Usuario creado!',
                 datos: nuevoUsuario
             });
+
         } catch (err) {
             console.log('Error en POST /usuarios/', err);
+            if (err.code === 'ER_DUP_ENTRY') {
+                return res.status(409).json({ 
+                    estado: false,
+                    mensaje: 'El email (nombre_usuario) ya está en uso.'
+                });
+            }
+
             res.status(500).json({
                 estado: false,
-                mensaje: 'Error interno del servidor (posible email duplicado).'
+                mensaje: 'Error interno del servidor.'
             });
         }
     }
@@ -69,14 +79,37 @@ export default class UsuariosControlador {
         try {
             const { usuario_id } = req.params;
             const datos = req.body;
-            
-            // Un Admin no puede hacerse auto downgrade
-            if (req.user.usuario_id == usuario_id && datos.tipo_usuario && datos.tipo_usuario !== 1) {
-                 return res.status(403).json({
+
+            // Evitar que un usuario cambie su propio rol
+            if (req.user && Number(req.user.usuario_id) === Number(usuario_id) && datos.tipo_usuario && Number(datos.tipo_usuario) !== Number(req.user.tipo_usuario)) {
+                return res.status(403).json({
                     estado: false,
-                    mensaje: 'Un administrador no puede cambiar su propio rol.'
+                    mensaje: 'No puedes cambiar tu propio rol.'
                 });
             }
+
+            if (datos.tipo_usuario && Number(datos.tipo_usuario) === 1) {
+                if (!req.user || Number(req.user.tipo_usuario) !== 1) {
+                    return res.status(403).json({
+                        estado: false,
+                        mensaje: 'No tienes permiso para asignar el rol de administrador.'
+                    });
+                }
+            }
+
+
+            const usuarioDestino = await this.usuariosServicio.buscarUsuarioDetalle(usuario_id);
+            if (!usuarioDestino) {
+                return res.status(404).json({ estado: false, mensaje: 'Usuario no encontrado' });
+            }
+            if (req.user && Number(req.user.tipo_usuario) > Number(usuarioDestino.tipo_usuario)) {
+                return res.status(403).json({
+                    estado: false,
+                    mensaje: 'No tienes permiso para modificar este usuario.'
+                });
+            }
+
+            if (datos.usuario_id) delete datos.usuario_id;
 
             const usuarioModificado = await this.usuariosServicio.editarUsuario(usuario_id, datos);
 
@@ -88,12 +121,15 @@ export default class UsuariosControlador {
             }
 
             res.json({
-                estado: true, 
+                estado: true,
                 mensaje: 'Usuario modificado!',
                 datos: usuarioModificado
             });
         } catch (err) {
             console.log('Error en PUT /usuarios/:id', err);
+            if (err.statusCode) {
+                return res.status(err.statusCode).json({ estado: false, mensaje: err.message });
+            }
             res.status(500).json({
                 estado: false,
                 mensaje: 'Error interno del servidor.'

@@ -9,7 +9,7 @@ export default class Servicios{
     }
 
     buscarPorId = async(servicio_id) => {
-        const sql = 'SELECT * FROM servicios WHERE id = ? AND activo = 1';
+        const sql = 'SELECT * FROM servicios WHERE servicio_id = ? AND activo = 1';
         const [servicios] = await conexion.execute(sql, [servicio_id]);
         return servicios[0];
     }

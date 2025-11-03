@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import passport from 'passport';
 import morgan from 'morgan';
 import fs from 'fs';
@@ -20,7 +21,12 @@ passport.use(strategy);
 passport.use(validation);
 app.use(passport.initialize());
 
-let log = fs.createWriteStream('./logs/access.log', {flags: 'a'});
+const logDirectory = path.resolve('./logs');
+if (!fs.existsSync(logDirectory)) {
+    fs.mkdirSync(logDirectory, { recursive: true });
+}
+let log = fs.createWriteStream(path.join(logDirectory, 'access.log'), {flags: 'a'});
+
 app.use(morgan('combined', {stream: log}));
 app.use(morgan('combined'))
 

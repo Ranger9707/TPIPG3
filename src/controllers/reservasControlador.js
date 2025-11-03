@@ -1,9 +1,13 @@
 import ReservasServicio from "../services/reservasServicio.js";
+import InformeServicio from "../services/informesServicio.js"; 
+import Reservas from "../db/reservas.js"; 
 
 export default class ReservasControlador{
 
     constructor(){
         this.reservasServicio = new ReservasServicio();
+        this.informeServicio = new InformeServicio();
+        this.reservasDB = new Reservas();
     }
 
     crear = async (req, res) => {
@@ -12,18 +16,18 @@ export default class ReservasControlador{
             const {
                 fecha_reserva,
                 salon_id,
-                usuario_id,
                 turno_id,
                 foto_cumpleaniero, 
                 tematica,
                 importe_salon,
                 importe_total,
                 servicios } = req.body;
+            const usuario_id_token = req.user.usuario_id;
 
             const reserva = {
                 fecha_reserva,
                 salon_id,
-                usuario_id,
+                usuario_id: usuario_id_token,
                 turno_id,
                 foto_cumpleaniero, 
                 tematica,
@@ -58,7 +62,7 @@ export default class ReservasControlador{
     
     buscarTodos = async (req, res) => {
         try {
-            const reservas = await this.reservasServicio.buscarTodos();
+            const reservas = await this.reservasServicio.buscarTodos(req.user);
 
             res.json({
                 estado: true, 
@@ -144,6 +148,47 @@ export default class ReservasControlador{
         }catch(error){
             console.log("error en DELETE /reservas/:id", error);
             res.status(500).json({estado: false, mensaje: "Error del servidor"});
+        }
+    }
+
+    generarReporteCsv = async (req, res) => {
+        try {
+            const datos = await this.reservasDB.llamarSpReporteReservas();
+
+            if (!datos || datos.length === 0) {
+                return res.status(404).json({ estado: false, mensaje: "No hay datos de reservas para reportar." });
+            }
+
+            const rutaArchivo = await this.informeServicio.informeReservasCsv(datos);
+
+            res.download(rutaArchivo, 'reporte_reservas.csv');
+
+        } catch (error) {
+            console.log("Error en generarReporteCsv:", error);
+            res.status(500).json({ estado: false, mensaje: "Error interno del servidor." });
+        }
+    }
+
+    generarReportePdf = async (req, res) => {
+        try {
+            const datos = await this.reservasDB.llamarSpReporteReservas();
+
+            if (!datos || datos.length === 0) {
+                return res.status(404).json({ estado: false, mensaje: "No hay datos de reservas para reportar." });
+            }
+
+            const pdfBuffer = await this.informeServicio.informeReservasPdf(datos);
+
+            res.set({
+                'Content-Type': 'application/pdf',
+                'Content-Length': pdfBuffer.length,
+                'Content-Disposition': 'attachment; filename="reporte_reservas.pdf"'
+            });
+            res.send(pdfBuffer);
+
+        } catch (error) {
+            console.log("Error en generarReportePdf:", error);
+            res.status(500).json({ estado: false, mensaje: "Error interno del servidor." });
         }
     }
 }

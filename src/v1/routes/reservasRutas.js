@@ -13,7 +13,6 @@ router.post('/', autorizarUsuarios([1,3]),
     [
         check('fecha_reserva', 'La fecha es necesaria.').notEmpty(),
         check('salon_id', 'El salón es necesario.').notEmpty(),
-        check('usuario_id', 'El usuario es necesario.').notEmpty(), 
         check('turno_id', 'El turno es necesario.').notEmpty(),  
         check('servicios', 'Faltan los servicios de la reserva.')
         .notEmpty()
@@ -42,10 +41,19 @@ router.put('/:reserva_id',
         validarCampo
     ],
     reservasControlador.editar);
-
+ 
 router.delete('/:reserva_id',
-    autorizarUsuarios([1]), // Solo Admin
+    autorizarUsuarios([1]), 
     reservasControlador.eliminar);
 
+router.get('/reporte/csv',
+    autorizarUsuarios([1]),
+    reservasControlador.generarReporteCsv
+);
+
+router.get('/reporte/pdf',
+    autorizarUsuarios([1]),
+    reservasControlador.generarReportePdf
+);
 
 export { router };
