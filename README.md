@@ -1,12 +1,4 @@
-# PROGRAMACION 3 UNER 2025
-# Trabajo Practico Integrador
-
-# Integrantes:
-# Vespa, Matias
-
-
 # FALTANTE.
-# - ESTADISTICAS.
 # - SWAGGER.
 # - CUALQUIER TIPO DE EXTRA.
 
