@@ -8,7 +8,8 @@
   "main": "src/appServidor.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "des": "node --watch src/appServidor.js"
+    "des": "node --watch src/appServidor.js",
+    "swagger-gen": "node ./swagger.cjs"
   },
   "dependencies": {
     "apicache": "^1.6.3",
@@ -24,6 +25,11 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "puppeteer": "^24.27.0"
+    "puppeteer": "^24.27.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "swagger-autogen": "^2.23.7"
   }
 }
