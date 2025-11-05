@@ -2,11 +2,18 @@ PROGRAMACION 3 UNER 2025
 Trabajo Practico Integrador
 
 Integrantes:
--Vespa, Matias 
+
+-Vespa, Matias
+
 -Casco, Melina Johanna Lisette 
--Cisnero, Daniel Marcelo 
+
+-Cisnero, Daniel Marcelo
+
 -Contreras, María Gabriela Olivares 
+
 -Debuck, Jose Ignacio
+
+
 
 OBJETIVOS DE LA PRIMERA ENTREGA.
 Primera entrega (avance funcional mínimo): 09/10/2025
