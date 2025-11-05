@@ -43,7 +43,7 @@ router.put('/:reserva_id',
     reservasControlador.editar);
  
 router.delete('/:reserva_id',
-    autorizarUsuarios([1]), 
+    autorizarUsuarios([1, 3]), 
     reservasControlador.eliminar);
 
 router.get('/reporte/csv',
@@ -54,6 +54,26 @@ router.get('/reporte/csv',
 router.get('/reporte/pdf',
     autorizarUsuarios([1]),
     reservasControlador.generarReportePdf
+);
+
+router.get('/estadisticas/por-salon',
+    autorizarUsuarios([1]),
+    reservasControlador.generarEstadisticaSalones
+);
+
+router.get('/estadisticas/ingresos-mensuales',
+    autorizarUsuarios([1]),
+    reservasControlador.generarEstadisticaIngresos
+);
+
+router.get('/estadisticas/top-servicios',
+    autorizarUsuarios([1]),
+    reservasControlador.generarEstadisticaTopServicios
+);
+
+router.get('/reporte/estadisticas-pdf',
+    autorizarUsuarios([1]),
+    reservasControlador.generarReporteEstadisticasPdf
 );
 
 export { router };

@@ -25,6 +25,13 @@ router.post('/',
 
 router.put('/:salon_id', 
     autorizarUsuarios([1, 2]), // Solo Admin y Empleado
+    [
+        check('titulo').optional().notEmpty().withMessage('El título no puede estar vacío.'),
+        check('direccion').optional().notEmpty().withMessage('La dirección no puede estar vacía.'),
+        check('capacidad').optional().isInt({ min: 1 }).withMessage('La capacidad debe ser mayor a 0.'),
+        check('importe').optional().isFloat({ min: 0.01 }).withMessage('El importe debe ser mayor a 0.'),
+        validarCampo    
+    ],
     salonesControlador.editar);
 
 router.delete('/:salon_id', 

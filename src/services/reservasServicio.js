@@ -137,7 +137,23 @@ export default class ReservasServicio {
     }
 
 
-    eliminar = async (reserva_id) => {
-        return this.reserva.eliminar(reserva_id);
+    eliminar = async (reserva_id, usuario = null) => {
+        let usuario_id_dueño = null;
+        if (usuario && usuario.tipo_usuario === 3) { // cliente
+            usuario_id_dueño = usuario.usuario_id;
+        }
+        return this.reserva.eliminar(reserva_id, usuario_id_dueño);
+    }
+
+    obtenerEstadisticaSalones = () => {
+        return this.reserva.llamarSpEstadisticaSalon();
+    }
+
+    obtenerEstadisticaIngresos = () => {
+        return this.reserva.llamarSpEstadisticaIngresos();
+    }
+
+    obtenerEstadisticaTopServicios = () => {
+        return this.reserva.llamarSpEstadisticaTopServicios();
     }
 }

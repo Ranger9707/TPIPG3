@@ -71,14 +71,40 @@ export default class Reservas {
             }
             return this.buscarPorId(reserva_id, db); 
     }
-    eliminar = async (reserva_id, db = conexion) => { 
-        const sql = "UPDATE reservas SET activo = 0 WHERE reserva_id = ? AND activo = 1";
-        const [result] = await db.execute(sql, [reserva_id]); 
+    eliminar = async (reserva_id, usuario_id = null, db = conexion) => { 
+        let sql = "UPDATE reservas SET activo = 0 WHERE reserva_id = ? AND activo = 1";
+        const params = [reserva_id];
+
+        if (usuario_id) {
+        sql += " AND usuario_id = ?";
+        params.push(usuario_id);
+        }
+        
+        const [result] = await db.execute(sql, params); 
         return result.affectedRows;
     }
+    
     llamarSpReporteReservas = async (db = conexion) => { 
         const sql = "CALL sp_reporte_reservas()";
         const [resultados] = await db.execute(sql); 
+        return resultados[0]; 
+    }
+
+    llamarSpEstadisticaSalon = async (db = conexion) => {
+        const sql = "CALL sp_estadistica_reservas_por_salon()";
+        const [resultados] = await db.execute(sql);
+        return resultados[0]; 
+    }
+
+    llamarSpEstadisticaIngresos = async (db = conexion) => {
+        const sql = "CALL sp_estadistica_ingresos_mensuales()";
+        const [resultados] = await db.execute(sql);
+        return resultados[0]; 
+    }
+
+    llamarSpEstadisticaTopServicios = async (db = conexion) => {
+        const sql = "CALL sp_estadistica_top_servicios()";
+        const [resultados] = await db.execute(sql);
         return resultados[0]; 
     }
 } 

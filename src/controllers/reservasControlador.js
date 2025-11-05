@@ -138,7 +138,7 @@ export default class ReservasControlador{
     eliminar = async (req, res) => {
         try{
             const { reserva_id } = req.params;
-            const filasAfectadas = await this.reservasServicio.eliminar(reserva_id);
+            const filasAfectadas = await this.reservasServicio.eliminar(reserva_id, req.user);
     
             if(filasAfectadas === 0) {
                 return res.status(404).json({estado: false, mensaje: "Reserva no encontrada"});
@@ -191,4 +191,63 @@ export default class ReservasControlador{
             res.status(500).json({ estado: false, mensaje: "Error interno del servidor." });
         }
     }
+
+    generarEstadisticaSalones = async (req, res) => {
+        try {
+            const datos = await this.reservasServicio.obtenerEstadisticaSalones();
+            res.json({ estado: true, datos: datos });
+        } catch (error) {
+            console.log("Error en generarEstadisticaSalones:", error);
+            res.status(500).json({ estado: false, mensaje: "Error interno del servidor." });
+        }
+    }
+
+    generarEstadisticaIngresos = async (req, res) => {
+        try {
+            const datos = await this.reservasServicio.obtenerEstadisticaIngresos();
+            res.json({ estado: true, datos: datos });
+        } catch (error) {
+            console.log("Error en generarEstadisticaIngresos:", error);
+            res.status(500).json({ estado: false, mensaje: "Error interno del servidor." });
+        }
+    }
+
+    generarEstadisticaTopServicios = async (req, res) => {
+        try {
+            const datos = await this.reservasServicio.obtenerEstadisticaTopServicios();
+            res.json({ estado: true, datos: datos });
+        } catch (error) {
+            console.log("Error en generarEstadisticaTopServicios:", error);
+            res.status(500).json({ estado: false, mensaje: "Error interno del servidor." });
+        }
+    }
+
+    generarReporteEstadisticasPdf = async (req, res) => {
+        try {
+            // 1. Obtenemos los 3 conjuntos de datos
+            const datosSalones = await this.reservasServicio.obtenerEstadisticaSalones();
+            const datosIngresos = await this.reservasServicio.obtenerEstadisticaIngresos();
+            const datosTopServicios = await this.reservasServicio.obtenerEstadisticaTopServicios();
+            const datosCompletos = {
+                salones: datosSalones,
+                ingresos: datosIngresos,
+                topServicios: datosTopServicios
+            };
+
+            const pdfBuffer = await this.informeServicio.informeEstadisticasPdf(datosCompletos);
+
+            res.set({
+                'Content-Type': 'application/pdf',
+                'Content-Length': pdfBuffer.length,
+                'Content-Disposition': 'attachment; filename="reporte_estadisticas.pdf"'
+            });
+            res.send(pdfBuffer);
+
+        } catch (error) {
+            console.log("Error en generarReporteEstadisticasPdf:", error);
+            res.status(500).json({ estado: false, mensaje: "Error interno del servidor." });
+        }
+    }
+
+    
 }

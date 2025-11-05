@@ -78,4 +78,44 @@ export default class InformeServicio {
             }
         }
     }
+
+    informeEstadisticasPdf = async (datosEstadisticas) => {
+        let browser; 
+        try{
+            const plantillaPath = path.join(__dirname, '../utiles/handlebars/estadisticas.hbs');
+            
+            if (!fs.existsSync(plantillaPath)) {
+                throw new Error(`Plantilla no encontrada en ${plantillaPath}.`);
+            }
+
+            const plantillaHtml = fs.readFileSync(plantillaPath , 'utf8');
+            const template = handlebars.compile(plantillaHtml);
+            const htmlFinal = template({ estadisticas: datosEstadisticas });
+            
+            browser = await puppeteer.launch({
+                headless: true,
+                args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+
+            let page = await browser.newPage();
+            await page.setContent(htmlFinal, { waitUntil: 'networkidle0' });
+
+            const buffer = await page.pdf({
+                format: 'A4',
+                printBackground: true
+            });
+
+            return buffer; 
+
+        }catch(error){
+            console.error('Error generando el PDF de estadísticas:', error);
+            throw error;
+        } finally {
+            if (browser) {
+                await browser.close(); 
+            }
+        }
+    }
+
+
 }

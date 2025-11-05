@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informe de Estadísticas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11px; 
+            margin: 40px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+    color: #2c3e50;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            border-bottom: 1px solid #ccc;
+            padding-top: 15px;
+        }
+        table {
+            width: 100%;
+    border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th {
+            background-color: #2980b9;
+    color: #fff;
+            padding: 8px;
+            text-align: left;
+        }
+        td {
+            border-bottom: 1px solid #ccc;
+    padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f8f8;
+}
+        .footer {
+            text-align: center;
+    font-size: 10px;
+            margin-top: 40px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Informe de Estadísticas</h1>
+
+    <h2>Salones más Populares</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Salón</th>
+                <th>Total de Reservas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each estadisticas.salones}}
+            <tr>
+                <td>{{this.salon}}</td>
+                <td>{{this.total_reservas}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <h2>Ingresos Mensuales</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Año</th>
+                <th>Mes</th>
+                <th>Reservas</th>
+                <th>Ingresos Totales</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each estadisticas.ingresos}}
+            <tr>
+                <td>{{this.anio}}</td>
+                <td>{{this.mes_numero}}</td>
+                <td>{{this.total_reservas}}</td>
+                <td>${{this.ingresos_totales}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <h2>Servicios más Contratados</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Servicio</th>
+                <th>Veces Contratado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each estadisticas.topServicios}}
+            <tr>
+                <td>{{this.servicio}}</td>
+                <td>{{this.veces_contratado}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <p class="footer">Programación III - 2025</p>
+</body>
+</html>
