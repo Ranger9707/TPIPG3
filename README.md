@@ -1,17 +1,18 @@
-# PROGRAMACION 3 UNER 2025
-# Trabajo Practico Integrador
+PROGRAMACION 3 UNER 2025
+Trabajo Practico Integrador
 
-# Integrantes:
-# Vespa, Matias
+Integrantes:
+Vespa, Matias Casco, Melina Johanna Lisette Cisnero, Daniel Marcelo Contreras, María Gabriela Olivares Debuck, Jose Ignacio
 
+OBJETIVOS DE LA PRIMERA ENTREGA.
+Primera entrega (avance funcional mínimo): 09/10/2025
+BREAD (Browse, Read, Edit, Add, Delete) completo de alguna entidad del API contemplando las mejores prácticas vistas en clase
 
 # FALTANTE.
 # - ESTADISTICAS.
-# - SWAGGER.
 # - CUALQUIER TIPO DE EXTRA.
 
 # BRUNO:
-
 Autenticación (Tokens)
 
 1. Obtener Token de Administrador (Rol 1)
@@ -22,7 +23,6 @@ URL: http://localhost:3000/api/v1/auth/login
 Body (JSON):
 
 JSON
-
 {
   "nombre_usuario": "oscram@correo.com",
   "contrasenia": "tu_contraseña_admin"
