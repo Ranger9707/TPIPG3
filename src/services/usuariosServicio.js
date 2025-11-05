@@ -22,12 +22,11 @@ export default class usuariosService {
     }
 
     crearUsuario = (usuario) => {
-        // valida si el email (nombre_usuario) ya existe
+        // valida si el email ya existe
         return this.usuarios.crear(usuario);
     }
 
     editarUsuario = async (usuario_id, datos) => {
-        // Si la contraseña esta vacia, la quitamos para no actualizarla
         if (datos.contrasenia === "" || datos.contrasenia === null || datos.contrasenia === undefined) {
             delete datos.contrasenia;
         }

@@ -84,7 +84,7 @@ export default class AuthController {
     } catch (err) {
         console.log('Error en POST /auth/register', err);
         
-        // Manejo de error para email duplicado
+        //error mail duplicado
         if (err.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({ 
                 estado: false,

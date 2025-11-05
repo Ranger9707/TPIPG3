@@ -26,7 +26,9 @@ export default class Reservas {
     crear = async(reserva, db = conexion) => { 
         const {
                 fecha_reserva, salon_id, usuario_id, turno_id,
-                foto_cumpleaniero, tematica, importe_salon, importe_total 
+                foto_cumpleaniero = null, 
+                tematica = null, 
+                importe_salon, importe_total 
             } = reserva;
         
         const sql = `INSERT INTO reservas 

@@ -224,7 +224,7 @@ export default class ReservasControlador{
 
     generarReporteEstadisticasPdf = async (req, res) => {
         try {
-            // 1. Obtenemos los 3 conjuntos de datos
+            //conjunto de datos
             const datosSalones = await this.reservasServicio.obtenerEstadisticaSalones();
             const datosIngresos = await this.reservasServicio.obtenerEstadisticaIngresos();
             const datosTopServicios = await this.reservasServicio.obtenerEstadisticaTopServicios();
