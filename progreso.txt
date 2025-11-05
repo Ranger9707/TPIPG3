@@ -1,7 +1,1 @@
-2. Reportes y Estadísticas (Admin)
-Reportes (PDF/CSV): No hay ninguna implementación para generar reportes de reservas en formatos PDF o CSV.
 
-Informes Estadísticos: No se han creado los procedimientos almacenados (stored procedures) en la base de datos ni los endpoints en la API para consumir dichas estadísticas.
-
-3. Aspectos Técnicos
-Documentación Swagger: No se ha implementado swagger para la documentación de la API.
