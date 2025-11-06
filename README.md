@@ -171,5 +171,116 @@ El proyecto sigue un diseño 4 capas para la separación de responsabilidades:
 - apicache
 - cors
 
+### Imagenes de muestra:
+👤 Autenticación y Perfil (/api/v1/auth)
+POST /login: (Público) Inicia sesión y devuelve un token JWT.
+
+POST /register: (Público) Permite a un nuevo usuario registrarse como Cliente (rol 3).
+<img width="1589" height="500" alt="REGISTRAR USUARIO CON FOTO" src="https://github.com/user-attachments/assets/f1da2ff1-5f21-4dbb-a1d8-1871b82252b5" />
+<img width="1594" height="412" alt="REGISTRAR USUARIO" src="https://github.com/user-attachments/assets/59326d95-d531-46b6-9edd-acf293505bd2" />
+
+GET /me:(Admin, Empleado, Cliente) Devuelve la información del perfil del usuario autenticado.
+<img width="1592" height="395" alt="VER PERFIL" src="https://github.com/user-attachments/assets/083a6644-75f9-4926-8834-7ada974f9009" />
+
+
+- 👥 Usuarios (/api/v1/usuarios)
+
+GET /: (Admin, Empleado) Lista todos los usuarios.
+<img width="1601" height="680" alt="VER USUARIOS" src="https://github.com/user-attachments/assets/c2e8d4b2-3a0b-4848-951a-696e12cf8437" />
+
+POST /: (Admin) Crea un nuevo usuario (de cualquier rol).
+<img width="1594" height="459" alt="CREAR USUARIO" src="https://github.com/user-attachments/assets/d52138d9-de66-479d-97e1-43d8cf3e6b70" />
+
+PUT /:usuario_id: (Admin) Modifica un usuario.
+<img width="1590" height="427" alt="EDITAR USUARIO" src="https://github.com/user-attachments/assets/4dc77c73-b371-4dc4-a951-39691b78f895" />
+
+DELETE /:usuario_id: (Admin) Elimina (soft delete) un usuario.
+<img width="1587" height="268" alt="ELIMINAR USUARIO" src="https://github.com/user-attachments/assets/61cead54-2ae7-4cdb-b3e2-cec8bab37ce0" />
+
+- 🛋️ Salones (/api/v1/salones)
+
+GET /: (Admin, Empleado, Cliente) Lista todos los salones activos.
+<img width="1577" height="767" alt="GET SALONES" src="https://github.com/user-attachments/assets/e21f9303-f373-4dc4-80db-5f2c787a5b77" />
+
+POST /: (Admin, Empleado) Crea un nuevo salón.
+<img width="1586" height="564" alt="POST SALON" src="https://github.com/user-attachments/assets/ec5b0fdd-24b1-46f8-8a0b-085cf342e7a6" />
+
+GET /:salon_id: (Admin, Empleado, Cliente) Obtiene un salón específico.
+<img width="1594" height="577" alt="GET SALONES  ID" src="https://github.com/user-attachments/assets/bed8307e-99c1-44d4-9806-530047588acb" />
+
+PUT /:salon_id: (Admin, Empleado) Modifica un salón.
+<img width="1592" height="546" alt="EDIT SALON" src="https://github.com/user-attachments/assets/0634ee48-1170-408e-9d9c-816851fbd0e6" />
+
+DELETE /:salon_id: (Admin, Empleado) Elimina (soft delete) un salón.
+<img width="1590" height="301" alt="DELETE SALON" src="https://github.com/user-attachments/assets/f520134f-c20f-48e1-adbc-9cf81e4305ca" />
+
+- ⚙️ Servicios (/api/v1/servicios)
+GET /: (Admin, Empleado, Cliente) Lista todos los servicios activos.
+<img width="1593" height="835" alt="VER SERVICIOS" src="https://github.com/user-attachments/assets/545acac3-9317-49be-aa6c-eb74a0d47265" />
+
+POST /: (Admin, Empleado) Crea un nuevo servicio.
+<img width="1595" height="375" alt="CREAR SERVICIO" src="https://github.com/user-attachments/assets/e2232ecc-8079-4be5-9bc0-fdcf2a7b4e10" />
+
+GET /:servicio_id: (Admin, Empleado, Cliente) Obtiene un servicio específico.
+<img width="1590" height="426" alt="VER SERVICIOS POR ID" src="https://github.com/user-attachments/assets/a26dd72d-f59f-4e8d-9f62-c152c6fc5c69" />
+
+PUT /:servicio_id: (Admin, Empleado) Modifica un servicio.
+<img width="1591" height="377" alt="EDIT SERVICIO" src="https://github.com/user-attachments/assets/52c32e27-c5d9-4ff5-8695-21fa4568344f" />
+
+DELETE /:servicio_id: (Admin, Empleado) Elimina (soft delete) un servicio.
+<img width="1590" height="272" alt="ELIMINAR SERVICIO" src="https://github.com/user-attachments/assets/6b3b6bb0-73f4-4b62-a5c6-48b4b879c967" />
+
+- 🗓️ Turnos (/api/v1/turnos)
+GET /: (Admin, Empleado, Cliente) Lista todos los turnos activos.
+<img width="1591" height="711" alt="VER TURNOS" src="https://github.com/user-attachments/assets/0aeebb76-ed97-4d2d-9c8e-db06039864ad" />
+
+POST /: (Admin, Empleado) Crea un nuevo turno.
+<img width="1587" height="401" alt="CREAR TURNO" src="https://github.com/user-attachments/assets/5b8e1845-2f64-4b71-9b45-470c924018e1" />
+
+GET /:turno_id: (Admin, Empleado, Cliente) Obtiene un turno específico.
+<img width="1592" height="365" alt="VER TURNO ID" src="https://github.com/user-attachments/assets/123088b6-194c-4497-809d-38813e3ac046" />
+
+PUT /:turno_id: (Admin, Empleado) Modifica un turno.
+<img width="1597" height="419" alt="EDITAR TURNO" src="https://github.com/user-attachments/assets/b2c8e495-dbb5-42da-9244-7a97a4fa529e" />
+
+DELETE /:turno_id: (Admin, Empleado) Elimina (soft delete) un turno.
+<img width="1584" height="303" alt="ELIMINAR TURNO" src="https://github.com/user-attachments/assets/fc7eb764-c96e-4bec-a531-fec963a13617" />
+
+- 📝 Reservas (/api/v1/reservas)
+GET /: (Admin, Empleado, Cliente) Lista reservas. (Si es Admin/Empleado ve todo, si es Cliente ve solo las suyas).
+<img width="1601" height="714" alt="VER RESERVAS ADMIN EMPLEADO" src="https://github.com/user-attachments/assets/fa7e77fd-ca20-4528-acb9-6c15ba3eb57a" />
+<img width="1589" height="659" alt="VER RESERVA CLIENTE" src="https://github.com/user-attachments/assets/5bc7d0ef-a43e-40df-810b-21e2df241b65" />
+
+POST /: (Admin, Cliente) Crea una nueva reserva (con sus servicios).
+<img width="1591" height="525" alt="CREAR RESERVA CLIENTE" src="https://github.com/user-attachments/assets/74e7147b-baa7-47f3-96bf-b039803f20c8" />
+<img width="1596" height="570" alt="RESERVA CON FOTO" src="https://github.com/user-attachments/assets/8505f090-290e-4033-b3bb-86d936e29604" />
+
+PUT /:reserva_id: (Admin) Modifica una reserva (y/o sus servicios).
+<img width="1592" height="520" alt="EDITAR RESERVA" src="https://github.com/user-attachments/assets/1d5678b7-6584-4ae1-b4ea-9aa49692a999" />
+
+
+DELETE /:reserva_id: (Admin, Cliente) (Extra) Elimina (soft delete) una reserva. (El Cliente solo puede borrar las suyas)
+<img width="1599" height="263" alt="ELIMINAR RESERVA ADMIN" src="https://github.com/user-attachments/assets/8522e954-f837-499d-807b-bb3f46a5c18b" />
+<img width="1595" height="294" alt="ELIMINAR RESERVA CLIENTE" src="https://github.com/user-attachments/assets/2a67b178-6f21-4eef-8b84-5b92f5a51b55" />
+
+EMAIL DE NOTIFICACION: Cliente y Admins reciben email de notificacion de reserva.
+![ezgif-7bf727a58f720145](https://github.com/user-attachments/assets/d3f450ba-aa55-4b6b-8651-06d5552b02db)
+
+- 📊 Reportes y Estadísticas (/api/v1/reservas/)
+GET /reporte/csv: (Admin) Descarga un reporte de reservas en formato CSV.
+<img width="1597" height="606" alt="REPORTE CSV RESERVA" src="https://github.com/user-attachments/assets/058cbcbc-8f9d-441c-93db-b094e25e22ac" />
+
+GET /reporte/pdf: (Admin) Descarga un reporte de reservas en formato PDF.
+<img width="1593" height="737" alt="RESERVAS PDF" src="https://github.com/user-attachments/assets/525f596b-64b4-4366-bc34-cb8fe39f46f4" />
+
+GET /estadisticas/por-salon: (Admin) Obtiene un JSON con estadísticas de reservas por salón.
+GET /estadisticas/ingresos-mensuales: (Admin) Obtiene un JSON con estadísticas de ingresos por mes.
+GET /estadisticas/top-servicios: (Admin) Obtiene un JSON con los servicios más contratados.
+<img width="1591" height="546" alt="ESTADISTICAS CSV" src="https://github.com/user-attachments/assets/356a3d14-8381-4c4c-b0ed-77fe3de9d8c4" />
+
+GET /reporte/estadisticas-pdf: (Admin) Descarga un reporte completo de estadísticas en formato PDF.
+<img width="1592" height="681" alt="ESTADISTICAS PDF" src="https://github.com/user-attachments/assets/a46846dc-576d-484a-b46e-30f0fc31fe81" />
+
+
 
 
