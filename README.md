@@ -1,14 +1,13 @@
 
 # Trabajo Practico Integrador - Programacion III - 2025
-
--  Sistema de Gestión de Reservas de Casas de Cumpleaños
+## Sistema de Gestión de Reservas de Casas de Cumpleaños
 
 ## Integrantes 
-- Matias Vespa
--
--
--
--
+### - Matias Vespa
+### -
+### -
+### -
+### -
 
 # --- Datos Importantes ---
 ### ENV:
@@ -171,5 +170,6 @@ El proyecto sigue un diseño 4 capas para la separación de responsabilidades:
 - morgan
 - apicache
 - cors
+
 
 
