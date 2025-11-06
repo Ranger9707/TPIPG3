@@ -4,10 +4,10 @@
 
 ## Integrantes 
 ### - Matias Vespa
-### -
-### -
-### -
-### -
+### - Daniel Marcelo Cisnero
+### - Melina Johanna Lisette Casco
+### - Jose Ignacio Debuck
+### - María Gabriela Olivares Contreras
 
 # --- Datos Importantes ---
 ### ENV:
@@ -280,6 +280,7 @@ GET /estadisticas/top-servicios: (Admin) Obtiene un JSON con los servicios más 
 
 GET /reporte/estadisticas-pdf: (Admin) Descarga un reporte completo de estadísticas en formato PDF.
 <img width="1592" height="681" alt="ESTADISTICAS PDF" src="https://github.com/user-attachments/assets/a46846dc-576d-484a-b46e-30f0fc31fe81" />
+
 
 
 
