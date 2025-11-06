@@ -1,0 +1,101 @@
+import express from 'express';
+import { check, body } from 'express-validator';
+import { validarCampo } from '../../middlewares/validarCampo.js';
+import ReservasControlador from '../../controllers/reservasControlador.js';
+import autorizarUsuarios from '../../middlewares/autorizarUsuarios.js';
+import upload from '../../middlewares/gestionArchivos.js';
+
+const reservasControlador = new ReservasControlador();
+const router = express.Router();
+
+router.get('/:reserva_id',  autorizarUsuarios([1,2,3]), reservasControlador.buscarPorId);
+router.get('/',  autorizarUsuarios([1,2,3]), reservasControlador.buscarTodos);
+router.post('/', 
+    autorizarUsuarios([1,3]), 
+    upload.single('foto_cumpleaniero'),
+    [
+        check('fecha_reserva', 'La fecha es necesaria.').notEmpty(),
+        check('salon_id', 'El salón es necesario.').notEmpty(),
+        check('turno_id', 'El turno es necesario.').notEmpty(),  
+
+        body('servicios').customSanitizer((value) => {
+            if (typeof value === 'string') {
+                try {
+                    return JSON.parse(value); 
+                } catch (e) {
+                    return null;
+                }
+            }
+            return value;
+        }),
+
+        check('servicios', 'Faltan los servicios de la reserva o el formato es incorrecto.')
+            .notEmpty()
+            .isArray(),  
+        check('servicios.*.importe')
+            .isFloat() 
+            .withMessage('El importe debe ser numérico.'),   
+
+        validarCampo
+    ],
+    reservasControlador.crear);
+
+router.put('/:reserva_id',
+    autorizarUsuarios([1]), // Solo Admin
+    upload.single('foto_cumpleaniero'),
+    [
+        check('fecha_reserva').optional().notEmpty().withMessage('La fecha no puede estar vacía.'),
+        check('salon_id').optional().notEmpty().withMessage('El salón no puede estar vacío.'),
+        check('turno_id').optional().notEmpty().withMessage('El turno no puede estar vacío.'),
+        check('importe_total').optional().isFloat({ min: 0 }).withMessage('El importe debe ser numérico.'),        
+
+        body('servicios').optional().customSanitizer((value) => {
+            if (typeof value === 'string') {
+                try { return JSON.parse(value); } catch (e) { return null; }
+            }
+            return value;
+        }),
+
+        check('servicios').optional().isArray().withMessage('Servicios debe ser un array.'),
+        check('servicios.*.servicio_id').optional().notEmpty().withMessage('El servicio_id es requerido.'),
+        check('servicios.*.importe').optional().isFloat().withMessage('El importe debe ser numérico.'),
+        
+        validarCampo
+    ],
+    reservasControlador.editar);
+ 
+router.delete('/:reserva_id',
+    autorizarUsuarios([1, 3]), 
+    reservasControlador.eliminar);
+
+router.get('/reporte/csv',
+    autorizarUsuarios([1]),
+    reservasControlador.generarReporteCsv
+);
+
+router.get('/reporte/pdf',
+    autorizarUsuarios([1]),
+    reservasControlador.generarReportePdf
+);
+
+router.get('/estadisticas/por-salon',
+    autorizarUsuarios([1]),
+    reservasControlador.generarEstadisticaSalones
+);
+
+router.get('/estadisticas/ingresos-mensuales',
+    autorizarUsuarios([1]),
+    reservasControlador.generarEstadisticaIngresos
+);
+
+router.get('/estadisticas/top-servicios',
+    autorizarUsuarios([1]),
+    reservasControlador.generarEstadisticaTopServicios
+);
+
+router.get('/reporte/estadisticas-pdf',
+    autorizarUsuarios([1]),
+    reservasControlador.generarReporteEstadisticasPdf
+);
+
+export { router };
