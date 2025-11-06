@@ -33,7 +33,7 @@ export default class UsuariosControlador {
 
     crear = async (req, res) => {
         try {
-            const {nombre, apellido, nombre_usuario, contrasenia, tipo_usuario, celular, foto} = req.body;
+            const {nombre, apellido, nombre_usuario, contrasenia, tipo_usuario, celular} = req.body;
             
             if (![1, 2, 3].includes(tipo_usuario)) {
                 return res.status(400).json({
@@ -42,7 +42,12 @@ export default class UsuariosControlador {
                 });
             }
 
-            const usuario = {nombre, apellido, nombre_usuario, contrasenia, tipo_usuario, celular, foto};
+            const usuario = {nombre, apellido, nombre_usuario, contrasenia, tipo_usuario, celular, foto:null};
+
+            if (req.file){
+                usuario.foto = req.file.path;
+            }
+
             const nuevoUsuario = await this.usuariosServicio.crearUsuario(usuario);
             
             if (!nuevoUsuario) {
@@ -79,6 +84,10 @@ export default class UsuariosControlador {
         try {
             const { usuario_id } = req.params;
             const datos = req.body;
+
+            if (req.file){
+                datos.foto = req.file.path;
+            }
 
             // Evitar que un usuario cambie su propio rol
             if (req.user && Number(req.user.usuario_id) === Number(usuario_id) && datos.tipo_usuario && Number(datos.tipo_usuario) !== Number(req.user.tipo_usuario)) {

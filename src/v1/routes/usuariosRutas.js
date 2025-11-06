@@ -3,6 +3,7 @@ import UsuariosControlador from '../../controllers/usuariosControlador.js';
 import { check } from 'express-validator';
 import { validarCampo } from '../../middlewares/validarCampo.js';
 import autorizarUsuarios from '../../middlewares/autorizarUsuarios.js';
+import upload from '../../middlewares/gestionArchivos.js';
 
 const usuariosControlador = new UsuariosControlador();
 const router = express.Router();
@@ -10,6 +11,7 @@ const router = express.Router();
 // Admin (1)
 router.post('/', 
     autorizarUsuarios([1]),
+    upload.single('foto'),
     [
         check('nombre', 'El nombre es requerido.').notEmpty(),
         check('apellido', 'El apellido es requerido.').notEmpty(),
@@ -22,6 +24,7 @@ router.post('/',
 
 router.put('/:usuario_id', 
     autorizarUsuarios([1]),
+    upload.single('foto'),
     [
         check('nombre_usuario').optional().isEmail().withMessage('El email (nombre_usuario) es inválido.'),
         check('contrasenia').optional().isLength({ min: 6 }).withMessage('La contraseña debe tener mín 6 caracteres.'),

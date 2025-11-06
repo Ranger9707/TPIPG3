@@ -104,13 +104,21 @@ export default class ReservasServicio {
             if (!existe) {
                 throw new Error('Reserva no encontrada');
             }
-
-            const { servicios, ...datosReserva } = datos;
-
+            let servicios = null;
+            if (typeof datos.servicios === 'string') {
+                try {
+                    servicios = JSON.parse(datos.servicios);
+                } catch (e) {
+                    throw new Error("El campo 'servicios' (string) no es un JSON válido.");
+                }
+            } 
+            else if (typeof datos.servicios === 'object' && datos.servicios !== null) {
+                servicios = datos.servicios;
+            }
+            const { servicios: _servicios, ...datosReserva } = datos;
             if (Object.keys(datosReserva).length > 0) {
                 await this.reserva.editar(reserva_id, datosReserva, transaccion);
             }
-
             if (servicios && Array.isArray(servicios)) {
                 await this.reservas_servicios.actualizar(reserva_id, servicios, transaccion);
             }
@@ -135,7 +143,6 @@ export default class ReservasServicio {
             }
         }
     }
-
 
     eliminar = async (reserva_id, usuario = null) => {
         let usuario_id_dueño = null;

@@ -55,16 +55,20 @@ export default class AuthController {
 
   register = async (req, res) => {
     try {
-        const { nombre, apellido, nombre_usuario, contrasenia, celular, foto } = req.body;        
+        const { nombre, apellido, nombre_usuario, contrasenia, celular } = req.body;        
         const usuario = {
             nombre, 
             apellido, 
             nombre_usuario, 
             contrasenia, 
             celular, 
-            foto,
+            foto: null,
             tipo_usuario: 3 //  Forzamos rol a Cliente
         };
+
+        if (req.file){
+            usuario.foto = req.file.path;
+        }
 
         const nuevoUsuario = await this.usuariosServicio.crearUsuario(usuario);
         

@@ -10,18 +10,46 @@ export default class ReservasControlador{
         this.reservasDB = new Reservas();
     }
 
-    crear = async (req, res) => {
+crear = async (req, res) => {
         try {
             
             const {
                 fecha_reserva,
                 salon_id,
                 turno_id,
-                foto_cumpleaniero, 
                 tematica,
                 importe_salon,
                 importe_total,
-                servicios } = req.body;
+                // servicios ya no se extrae directamente como array
+            } = req.body;
+            
+            // --- AJUSTE AQUÍ ---
+            // Parsea el string 'servicios' que viene del formulario
+            let servicios;
+
+            // --- INICIO DE LA CORRECCIÓN ---
+            // Comprobamos si 'servicios' es un string (viene de multipart-form)
+            if (typeof req.body.servicios === 'string') {
+                try {
+                    servicios = JSON.parse(req.body.servicios);
+                } catch (e) {
+                    return res.status(400).json({ 
+                        estado: false, 
+                        mensaje: "El campo 'servicios' (string) no es un JSON válido." 
+                    });
+                }
+            } 
+            // Si ya es un objeto (viene de application/json), lo usamos
+            else if (typeof req.body.servicios === 'object' && req.body.servicios !== null) {
+                servicios = req.body.servicios;
+            } 
+            // Si no existe o es un tipo incorrecto
+            else {
+                 return res.status(400).json({ 
+                    estado: false, 
+                    mensaje: "El campo 'servicios' es requerido y debe ser un array." 
+                });
+            }
             const usuario_id_token = req.user.usuario_id;
 
             const reserva = {
@@ -29,12 +57,16 @@ export default class ReservasControlador{
                 salon_id,
                 usuario_id: usuario_id_token,
                 turno_id,
-                foto_cumpleaniero, 
+                foto_cumpleaniero: null, 
                 tematica,
                 importe_salon,
                 importe_total, 
                 servicios
             };
+
+            if (req.file){
+                reserva.foto_cumpleaniero = req.file.path;
+            }
 
             const nuevaReserva = await this.reservasServicio.crear(reserva)
 
@@ -110,6 +142,10 @@ export default class ReservasControlador{
             const datos = req.body; 
             if (datos.usuario_id) {
                 delete datos.usuario_id;
+            }
+
+            if (req.file){
+                datos.foto_cumpleaniero = req.file.path;
             }
 
             const reservaModificada = await this.reservasServicio.editar(reserva_id, datos);
