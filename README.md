@@ -138,3 +138,38 @@ END$$
 
 Vistas: Creamos una vista (v_reservas_con_servicios) para simplificar las consultas que necesitan cruzar datos de reservas con los servicios.
 
+# Informacion sobre la aplicacion
+### Swagger:
+- API documentada y se puede probar interactivamente a traves de: http://localhost:3000/api/v1/docs
+### Arquitectura:
+El proyecto sigue un diseño 4 capas para la separación de responsabilidades:
+- Rutas (routes/): Define los endpoints, permisos (middlewares de autorización) y validaciones (express-validator).
+- Controladores (controllers/): Orquesta el flujo. Maneja req y res, parsea el body y llama a los servicios.
+- Servicios (services/): Contiene la logica de negocio. logica transacciones, la logica de reportes y el envio de correos.
+- Datos (db/): capa que habla con la base de datos. Ejecuta las consultas SQL y los Stored Procedures.
+### Manejo de Transacciones: 
+- La creación (POST /reservas) y edición (PUT /reservas/:id) de reservas son atomicas. Utilizamos un Pool de MySQL para obtener una conexión (getConnection), iniciar una transacción (beginTransaction), y solo hacer commit si tanto la reserva (reservas) como sus servicios asociados (reservas_servicios) se guardan correctamente. Si falla, hace rollback para revertir cambios, asegurando que no queden datos corruptos.
+### Manejo de Subida de Archivos: 
+- Las rutas de creacion/edición de /reservas y /usuarios, especificamente para las fotos de usuario/cumpleañero usan multer para manejar multipart/form-data. en los casos en el que se neceisten datos JSON (como el array servicios), ya que llegan los datos en forma de string, el controlador se encarga de parsear los datos recibidos en forma de string (JSON.parse(req.body.servicios)) antes de pasarlo al servicio.
+### Funcionalidades Extra:
+- Registro Público de Clientes: Creamos un endpoint público (POST /api/v1/auth/register) que permite a cualquier persona registrarse en el sistema. Sin esto, un cliente nuevo no podría usar la API a menos que un Administrador le cree una cuenta manualmente, con este metodo el controlador fuerza que cualquier cuenta creada por esta ruta reciba automaticamente el tipo_usuario = 3 (Cliente).
+- Endpoint "Mi Perfil" (/me): ruta (GET /api/v1/auth/me) que permite a cualquier usuario autenticado (sin importar su rol) obtener su propia información de perfil (nombre, email, etc.). util para que cualquiera consumiendo la API tenga una forma de saber "quién soy" después de iniciar sesión. Este endpoint resuelve eso, tomando el ID del usuario directamente del token JWT.
+- Cancelación de Reservas por Clientes: permitimos que el cliente pueda cancelar (borrar logicamente) sus propias reservas. La lógica en el servicio (reservasServicio.js) y la base de datos (db/reservas.js) verifica que si el usuario es un cliente, la consulta UPDATE ... SET activo = 0 solo se ejecute si el usuario_id de la reserva coincide con el usuario_id del token.
+### Dependencias utilizadas:
+- express
+- mysql2
+- passport / passport-local / passport-jwt
+- jsonwebtoken
+- express-validator
+- multer
+- nodemailer
+- handlebars
+- puppeteer
+- csv-writer
+- swagger-autogen / swagger-ui-express
+- dotenv
+- morgan
+- apicache
+- cors
+
+
