@@ -26,6 +26,12 @@ DATABASE=reservastp
 
 JWT_SECRET=48441520b81750add320ba0199a63cd25f6b776008e96a7bc00d97f46c256924
 ```
+### SWAGGER:
+La API no se iniciará si el archivo swagger-output.json no existe. En caso de no usar el provisto se debe inicializar:
+```
+npm run swagger-gen
+```
+El servidor estará corriendo en http://localhost:3000.
 
 ### Añadidos a la base de datos:
 
@@ -280,6 +286,7 @@ GET /estadisticas/top-servicios: (Admin) Obtiene un JSON con los servicios más 
 
 GET /reporte/estadisticas-pdf: (Admin) Descarga un reporte completo de estadísticas en formato PDF.
 <img width="1592" height="681" alt="ESTADISTICAS PDF" src="https://github.com/user-attachments/assets/a46846dc-576d-484a-b46e-30f0fc31fe81" />
+
 
 
 
