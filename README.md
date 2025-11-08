@@ -10,12 +10,12 @@
 ### - María Gabriela Olivares Contreras
 
 
-############# ENLACE DE YOUTUBE #################
+# ENLACE DE YOUTUBE
+[![Watch the video](https://img.youtube.com/vi/S_8BRkZth8I/maxresdefault.jpg)](https://youtu.be/S_8BRkZth8I)
+
+### [Video explicativo ](https://youtu.be/S_8BRkZth8I)
 
 https://www.youtube.com/watch?v=S_8BRkZth8I
-
-#################################################
-
 
 # --- Datos Importantes ---
 ### ENV:
@@ -294,6 +294,7 @@ GET /estadisticas/top-servicios: (Admin) Obtiene un JSON con los servicios más 
 
 GET /reporte/estadisticas-pdf: (Admin) Descarga un reporte completo de estadísticas en formato PDF.
 <img width="1592" height="681" alt="ESTADISTICAS PDF" src="https://github.com/user-attachments/assets/a46846dc-576d-484a-b46e-30f0fc31fe81" />
+
 
 
 
