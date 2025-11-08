@@ -12,9 +12,10 @@
 
 ############# ENLACE DE YOUTUBE #################
 
-https://www.youtube.com/watch?v=26LFlpkf_jE
+https://www.youtube.com/watch?v=S_8BRkZth8I
 
 #################################################
+
 
 # --- Datos Importantes ---
 ### ENV:
@@ -293,6 +294,7 @@ GET /estadisticas/top-servicios: (Admin) Obtiene un JSON con los servicios más 
 
 GET /reporte/estadisticas-pdf: (Admin) Descarga un reporte completo de estadísticas en formato PDF.
 <img width="1592" height="681" alt="ESTADISTICAS PDF" src="https://github.com/user-attachments/assets/a46846dc-576d-484a-b46e-30f0fc31fe81" />
+
 
 
 
